@@ -52,7 +52,3 @@ python app.py
 2. Sees a grid/list of the first 20 Pokémon with images.
 3. Clicks on "Pikachu" to view detailed information.
 4. Uses "Back to List" to return to the grid.
-
-### Submission
-- Upload this project to a Git repository ().
-- Send the repository link to `ethan@shunyahealth.com` with the subject: "Pokemon Assessment - Axel De Leon".
