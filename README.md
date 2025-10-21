@@ -53,6 +53,3 @@ python app.py
 3. Clicks on "Pikachu" to view detailed information.
 4. Uses "Back to List" to return to the grid.
 
-### Submission
-- Upload this project to a Git repository (e.g., GitHub).
-- Send the repository link to `ethan@shunyahealth.com` with the subject: "Pokemon Assessment - Exertuss".
