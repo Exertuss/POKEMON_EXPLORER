@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Explorer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px; 
+        }
+        #list-view {display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .pokemon-card {
+            border: 1px solid #ddd;
+            border: 1px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .pokemon-card img {
+            width: 100px;
+            height: 100px;
+        }
+        #detail-view { display: none; margin-top: 20px; border: 1px solid #ddd; padding: 20px;
+        }
+        #detail-view img {
+            width: 200px;
+            height: 200px;
+        }
+        #back-button {
+            margin-bottom: 10px;
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokemon Explorer</h1>
+    <div id="list-view"></div>
+
+    <div id="detail-view">
+        <div id="back-button">← Back to list</div>
+        <h2 id="pokemon-name"></h2>
+        <img id="pokemon-image" src="" alt="">
+        <p><strong>Height:</strong> <span id="pokemon-height"></span></p>
+        <p><strong>Weight:</strong> <span id="pokemon-weight"></span></p>
+        <p><strong>Types:</strong> <span id="pokemon-types"></span></p>
+        <p><strong>Abilities:</strong> <span id="pokemon-abilities"></span></p>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:5000/api/pokemon';
+        async function loadlist() {
+            const response = await fetch(API_BASE);
+            const pokemons = await response.json();
+            const listView = document.getElementById('list-view');
+            listView.innerHTML = '';
+            pokemons.forEach(poke => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card';
+                card.innerHTML = `
+                    <img src="${poke.image}" alt="${poke.name}">
+                    <p>${poke.name}</p>
+                `;
+                card.onclick = () => loadDetail(poke.name);
+                listView.appendChild(card);
+            });
+        }
+        async function loadDetail(name) {
+            const response = await fetch(`${API_BASE}/${name}`);
+            const poke = await response.json();
+            document.getElementById('pokemon-name').innerText = poke.name;
+            document.getElementById('pokemon-image').src = poke.image;
+            document.getElementById('pokemon-height').innerText = poke.height;
+            document.getElementById('pokemon-weight').innerText = poke.weight;
+            document.getElementById('pokemon-types').innerText = poke.types.join(', ');
+            document.getElementById('pokemon-abilities').innerText = poke.abilities.join(', ');
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+        }
+        document.getElementById('back-button').onclick = () => {
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'grid';
+        };
+        loadlist();
+    </script>
+</body>
+</html>
